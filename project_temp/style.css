@@ -1,0 +1,52 @@
+html,body{
+  margin: 0;
+  padding: 0;
+}
+body{
+  height: 100%;
+  width: 100%;
+  background-color: #383b3f;
+}
+.sec1{
+  height:12vh;
+  border: 2px solid black;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.sec2{
+  height:71vh;
+  border: 2px solid black;
+  color: white;
+  text-align: center;
+}
+.sec3{
+  height:15vh;
+  border: 2px solid black;
+  color: white;
+  text-align: center;
+}
+.sec2_2{
+  height: 50vh;
+  border: 2px solid black;
+  color: white;
+  text-align: center;
+  width: 40%;
+  float: right;
+  padding-top: 0;
+  position: relative;
+  right: 7%;
+  top:-1%;
+}
+.sec2_1{
+  height: 50vh;
+  border: 2px solid black;
+  color: white;
+  text-align: center;
+  width: 40%;
+  float: left;
+  position: relative;
+  left:7%;
+  top: -1%;
+}
