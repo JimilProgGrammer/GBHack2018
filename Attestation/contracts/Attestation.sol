@@ -39,6 +39,12 @@ contract Attestation {
     mapping(uint => address) private helperMapping;
     mapping(uint => Degree) public degrees;
 
+    constructor() public {
+        universityCount = 0;
+        studentCount = 0;
+        degreeCount = 0;
+    }
+
     /**
      * Adds a new university on the N/w and updates the count.
      */
