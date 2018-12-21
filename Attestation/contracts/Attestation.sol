@@ -123,6 +123,7 @@ contract Attestation {
     function verifyDegree(uint degreeId) public {
         require(msg.sender == helperMapping[degrees[degreeId].universityId], "Not authenticated to verify this degree.");
         require(!degrees[degreeId].verified, "Degree is already verified!");
+        require(degreeId > 0 && degreeId <= degreeCount, "Please pass valid degreeId");
         degrees[degreeId].verified = true;
     }
 }
