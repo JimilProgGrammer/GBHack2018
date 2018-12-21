@@ -44,6 +44,7 @@ contract Attestation {
      */
     function addUniversity(string name, string location, string email) public {
         require(!universities[msg.sender].isInit, "Address already has a university registered.");
+        require(!students[msg.sender].isInit, "Address cannot have both student and university registration.");
         universityCount++;
         helperMapping[universityCount] = msg.sender;
         universities[msg.sender] = University(
@@ -56,6 +57,7 @@ contract Attestation {
      */
     function addStudent(string name, string dob, string email, string gpa, uint universityId) public {
         require(!students[msg.sender].isInit, "Address already has a student registered.");
+        require(!universities[msg.sender].isInit, "Address cannot have both student and university registration.");
         studentCount++;
         students[msg.sender] = Student(
             studentCount, name, dob, email, gpa, universityId, msg.sender, true
