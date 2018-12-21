@@ -44,7 +44,7 @@ contract("Attestation", function(accounts) {
     it("adds student and associated degree correctly", () => {
         return Attestation.deployed().then(function(i) {
             instance = i;
-            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, { from: accounts[1] });
+            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, "B.Tech", "Computer Science", 2018, { from: accounts[1] });
             return instance.students(accounts[1]);
         }).then(function(student) {
             assert.equal(student[0], 1, "contains correct id");
@@ -60,6 +60,9 @@ contract("Attestation", function(accounts) {
             assert.equal(degree[1], 1, "contains the correct student id");
             assert.equal(degree[2], 1, "contains the correct associated university id");
             assert.equal(degree[3], false, "correctly sets the verified flag.");
+            assert.equal(degree[4], "B.Tech", "contains the correct degree name");
+            assert.equal(degree[5], "Computer Science", "contains the correct course name");
+            assert.equal(degree[6], 2018, "contains the correct pass year");
         });
     });
 
@@ -89,16 +92,37 @@ contract("Attestation", function(accounts) {
     it("does not allow same account to register as a student twice", () => {
         return Attestation.deployed().then(function(i) {
             instance = i;
-            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, { from: accounts[1] });
+            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, "M.Tech", "Information Technology", 2018, { from: accounts[1] });
         }).then(assert.fail).catch(function(error) {
             assert(error.message);
-            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, { from: accounts[3] });
+            instance.addStudent("Student 1", "08-05-1999", "studenttestemail1", "9.3", 1, "M.Tech", "Information Technology", 2018, { from: accounts[3] });
             return instance.studentCount();
         }).then(function(sCount) {
             assert.equal(sCount, 2, "increments student count correctly");
             return instance.degreeCount();
         }).then(function(dCount) {
             assert.equal(dCount, 2, "increments degree count correctly");
+        });
+    });
+
+    it("does not allow registered account to register as someone else", () => {
+        return Attestation.deployed().then(function(i) {
+            instance = i;
+            instance.addUniversity("University 3", "Bangalore", "testemail3", { from: accounts[1] });
+        }).then(assert.fail).catch(function(error) {
+            assert(error.message);
+            instance.addStudent("Student 3", "08-05-1999", "studenttestemail3", "9.3", 1, "M.Tech", "Information Technology", 2018, { from: accounts[0] });    
+        }).then(assert.fail).catch(function(error) {
+            assert(error.message);
+            return instance.studentCount();
+        }).then(function(sCount) {
+            assert.equal(sCount, 2, "studentCount maintained correctly");
+            return instance.universityCount();
+        }).then(function(uCount) {
+            assert.equal(uCount, 2, "universityCount maintained correctly");
+            return instance.degreeCount();
+        }).then(function(dCount) {
+            assert.equal(dCount, 2, "degreeCount maintained correctly");
         });
     });
 
